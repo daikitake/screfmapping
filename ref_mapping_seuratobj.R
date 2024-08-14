@@ -190,7 +190,7 @@ extract_cells_seuratobj <- function(query, reference, prefix){
   } else {
     print("No CD4T cell was detected in the sample.")
   }
-  
+  return(query)
 }
 
 

@@ -408,8 +408,17 @@ mapQuery <- function (exp_query, metadata_query, ref_obj, vars = NULL, verbose =
         message("All done!")
     
     if (return_type == 'Seurat') {
-        que@assays$SymphonyQuery@data <- exp_query
-        que@assays$SymphonyQuery@scale.data <- exp_query_scaled_sync
+        seurat_version <- packageVersion("Seurat")
+        if (seurat_version >= "5.0.0") {
+            message("Seurat v5 or higher detected.")
+            que[["SymphonyQuery"]]$data <- exp_query
+            que[["SymphonyQuery"]]$scale.data <- exp_query_scaled_sync
+        } else {
+            message("Seurat version is lower than v5.")
+            que@assays$SymphonyQuery@data <- exp_query
+            que@assays$SymphonyQuery@scale.data <- exp_query_scaled_sync
+        }
+
         que[['pca']] <- Seurat::CreateDimReducObject(
             embeddings = t(Z_pca_query),
             loadings = ref_obj$loadings, 

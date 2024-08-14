@@ -33,10 +33,18 @@ q <- CreateSeuratObject(counts = pbmc.data,
                         assay = "RNA",
                         min.cells = 3,
                         min.features = 200)
+# It may need the following lines if nFeature_RNA and nCount_RNA are not calculated.
+# q$nFeature_RNA <- colSums(GetAssayData(q, layer = "counts") > 0)
+# q$nCount_RNA <- colSums(GetAssayData(q, layer = "counts"))
+# q@meta.data['log_umi'] <- log10(q$nCount_RNA)
 
 ## ----extraction of CD4T-----------------------------------------------------------------------------
 # if your seurat object contains only CD4T, skip this step
-extract_cells_seuratobj(q, reference, prefix)
+q <- extract_cells_seuratobj(q, reference, prefix)
+write.csv(q@meta.data[, c('predicted.celltype.l1.score', 'predicted.celltype.l1',
+                'predicted.celltype.l2.score', 'predicted.celltype.l2',
+                'predicted.celltype.l3.score', 'predicted.celltype.l3')],
+      file = paste0(prefix, '_Azimuth.csv')
 
 # load extracted CD4T
 query_obj <- readRDS(paste0(prefix, "_CD4T_AssayData.rds"))
