@@ -58,6 +58,15 @@ extract_cells_seuratobj <- function(query, reference, prefix){
                       reference$map[[x, drop = TRUE]]
                     })
   names(x = refdata) <- "celltype.l1"
+
+  annotations <- c("celltype.l1", "celltype.l2", "celltype.l3")
+
+  refdata <- lapply(X = annotations, function(x) {
+    reference$map[[x, drop = TRUE]]
+  })
+
+  names(refdata) <- annotations
+
   if (TRUE) {
     refdata[["impADT"]] <- GetAssayData(
       object = reference$map[['ADT']],

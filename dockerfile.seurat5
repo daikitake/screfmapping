@@ -66,12 +66,19 @@ RUN R --no-echo --no-restore --no-save -e "BiocManager::install('TFBSTools')" &&
 COPY ./ /screfmapping/
 COPY ./data/cache_symphony_sct.uwot /home/rstudio/autoimmune_10x/
 
+# download the reference and move it to the right place
+RUN wget --content-disposition https://figshare.com/ndownloader/files/44207819 && \
+    mv ref_Reference_Mapping_20220525.RData /screfmapping/data/
+
 # Download and extract example data
 RUN wget https://cf.10xgenomics.com/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz && \
     tar xvf pbmc3k_filtered_gene_bc_matrices.tar.gz
 
 # Set the working directory
 WORKDIR /home/rstudio/autoimmune_10x
+
+# set the permissions for the working directory
+RUN chown -R rstudio:rstudio /home/rstudio/autoimmune_10x
 
 # Define the default command (you can modify or uncomment it based on your needs)
 # CMD [ "R" ]
