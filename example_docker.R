@@ -53,6 +53,10 @@ query_obj <- CreateSeuratObject(counts = query_obj,
                         assay = "RNA",
                         min.cells = 3,
                         min.features = 200)
+# It may need the following lines if nFeature_RNA and nCount_RNA are not calculated.
+# query_obj$nFeature_RNA <- colSums(GetAssayData(query_obj, layer = "counts") > 0)
+# query_obj$nCount_RNA <- colSums(GetAssayData(query_obj, layer = "counts"))
+# query_obj@meta.data['log_umi'] <- log10(query_obj$nCount_RNA)
 
 ## ----run Symphony-----------------------------------------------------------------------------
 reference_mapping_seuratobj(ref, query_obj, prefix)
