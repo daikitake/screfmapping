@@ -203,25 +203,12 @@ extract_cells_seuratobj <- function(query, reference, prefix){
 }
 
 
-reference_mapping_seuratobj <- function(ref, query_obj, prefix){
-  ## ----parameter setting----------------------------------------------------------------------------
-  vars.obj <- c("sample")
-  vars.query1 <- c("batch")
-  vars.query2 <- c("disease")
-  
-  genes <- c("CD3E", "MS4A1", "CST3", "CD4", "CD8A",
+reference_mapping_seuratobj <- function(ref, query_obj, prefix, genes=c("CD3E", "MS4A1", "CST3", "CD4", "CD8A",
              "TBX21", "GATA3", "RORC", "FOXP3", "CCR8",
              "IL2RA", "S1PR1", "CCR7", "IL7R", "FAS",
              "CD28", "CTLA4", "IKZF4", "NRP1", "BCL6",
-             "CXCR5", "TOX", "CSF2", "MX1")
-  
-  c1 <- c("sample")
-  c2 <- c("sex")
-  c3 <- c("project_name", "sample", "disease", "disease_duration",
-          "condition", "age", "race", "sex", "immunosuppressant", "immunosuppressant_duration",
-          "batch")
-  
-  
+             "CXCR5", "TOX", "CSF2", "MX1"),
+              vars.batch=c("batch")){  
   ## ----query_obj--------------------------------------------------------------------------
   # modified from reference_mapping
   query_obj <- query_obj %>%
@@ -231,7 +218,7 @@ reference_mapping_seuratobj <- function(ref, query_obj, prefix){
   
   
   ## ----Map Query------------------------------------------------------------------------------------
-  for (var in vars.query1) {
+  for (var in vars.batch) {
     if (! var %in% colnames(query_obj@meta.data)) {
       query_obj@meta.data[[var]] <- "batch"
     }
@@ -240,7 +227,7 @@ reference_mapping_seuratobj <- function(ref, query_obj, prefix){
   query <- mapQuery(exp_query = query_obj$SCT@scale.data,
                     metadata_query = query_obj@meta.data,
                     ref_obj = ref,
-                    vars = vars.query1,
+                    vars = vars.batch,
                     do_normalize = FALSE,
                     return_type = "Seurat")
   
