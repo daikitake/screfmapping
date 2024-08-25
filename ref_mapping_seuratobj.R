@@ -309,7 +309,7 @@ reference_mapping_seuratobj <- function(ref, query_obj, prefix, genes=c("CD3E", 
   
   ## ----output files---------------------------------------------------------------------------------
   write.csv(cbind(queryL1@meta.data[c("clusterL1", "clusterL1_prob")], queryL2@meta.data[c("clusterL2", "clusterL2_prob")]),
-            file = paste0(prefix, "_Reference_Mapping_cluster_information.csv"),
+            file = paste0(prefix, "_Reference_Mapping.csv"),
             row.names = TRUE,
             quote = FALSE)
   queryL1_metadata <- queryL1@reductions[["umap"]]@cell.embeddings
